@@ -67,3 +67,15 @@ export const getPaymentMethodLabel = (method: string): string => {
   };
   return labels[method] || method;
 };
+
+export const getSourceLabel = (source: string): string => {
+  const labels: Record<string, string> = {
+    salary: 'Salary',
+    freelance: 'Freelance',
+    bonus: 'Bonus',
+    investment: 'Investment',
+    gift: 'Gift',
+    other: 'Other',
+  };
+  return labels[source] || source;
+};
