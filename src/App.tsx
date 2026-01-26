@@ -6,6 +6,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Income from "./pages/Income";
+import Expenses from "./pages/Expenses";
+import Budgets from "./pages/Budgets";
+import Savings from "./pages/Savings";
+import Analytics from "./pages/Analytics";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,12 +26,12 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/income" element={<Index />} />
-            <Route path="/expenses" element={<Index />} />
-            <Route path="/budgets" element={<Index />} />
-            <Route path="/savings" element={<Index />} />
-            <Route path="/analytics" element={<Index />} />
-            <Route path="/settings" element={<Index />} />
+            <Route path="/income" element={<Income />} />
+            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/savings" element={<Savings />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
