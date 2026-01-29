@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Income from "./pages/Income";
 import Expenses from "./pages/Expenses";
+import Recurring from "./pages/Recurring";
 import Budgets from "./pages/Budgets";
 import Savings from "./pages/Savings";
 import Analytics from "./pages/Analytics";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/income" element={<Income />} />
             <Route path="/expenses" element={<Expenses />} />
+            <Route path="/recurring" element={<Recurring />} />
             <Route path="/budgets" element={<Budgets />} />
             <Route path="/savings" element={<Savings />} />
             <Route path="/analytics" element={<Analytics />} />
