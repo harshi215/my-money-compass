@@ -152,6 +152,63 @@ export type Database = {
         }
         Relationships: []
       }
+      recurring_transactions: {
+        Row: {
+          amount: number
+          category: Database["public"]["Enums"]["expense_category"] | null
+          created_at: string
+          day_of_month: number | null
+          description: string | null
+          frequency: string
+          id: string
+          is_active: boolean
+          last_processed: string | null
+          next_occurrence: string
+          notes: string | null
+          payment_method: Database["public"]["Enums"]["payment_method"] | null
+          source: Database["public"]["Enums"]["income_source"] | null
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category?: Database["public"]["Enums"]["expense_category"] | null
+          created_at?: string
+          day_of_month?: number | null
+          description?: string | null
+          frequency: string
+          id?: string
+          is_active?: boolean
+          last_processed?: string | null
+          next_occurrence: string
+          notes?: string | null
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          source?: Database["public"]["Enums"]["income_source"] | null
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: Database["public"]["Enums"]["expense_category"] | null
+          created_at?: string
+          day_of_month?: number | null
+          description?: string | null
+          frequency?: string
+          id?: string
+          is_active?: boolean
+          last_processed?: string | null
+          next_occurrence?: string
+          notes?: string | null
+          payment_method?: Database["public"]["Enums"]["payment_method"] | null
+          source?: Database["public"]["Enums"]["income_source"] | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       savings_goals: {
         Row: {
           color: string | null

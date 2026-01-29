@@ -9,6 +9,7 @@ import {
   LogOut,
   Wallet,
   PiggyBank,
+  RefreshCw,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/hooks/useAuth';
@@ -32,6 +33,7 @@ const mainNavItems = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboard },
   { title: 'Income', url: '/income', icon: TrendingUp },
   { title: 'Expenses', url: '/expenses', icon: TrendingDown },
+  { title: 'Recurring', url: '/recurring', icon: RefreshCw },
   { title: 'Budgets', url: '/budgets', icon: Target },
   { title: 'Savings', url: '/savings', icon: PiggyBank },
   { title: 'Analytics', url: '/analytics', icon: PieChart },
