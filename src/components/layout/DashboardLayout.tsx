@@ -25,7 +25,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={true} open={true}>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <SidebarInset className="flex-1">
