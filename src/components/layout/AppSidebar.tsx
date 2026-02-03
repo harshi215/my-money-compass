@@ -10,6 +10,7 @@ import {
   Wallet,
   PiggyBank,
   RefreshCw,
+  FileUp,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/hooks/useAuth';
@@ -36,6 +37,7 @@ const mainNavItems = [
   { title: 'Budgets', url: '/budgets', icon: Target },
   { title: 'Savings', url: '/savings', icon: PiggyBank },
   { title: 'Analytics', url: '/analytics', icon: PieChart },
+  { title: 'Import Data', url: '/import', icon: FileUp },
 ];
 
 export function AppSidebar() {

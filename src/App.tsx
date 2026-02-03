@@ -12,6 +12,7 @@ import Recurring from "./pages/Recurring";
 import Budgets from "./pages/Budgets";
 import Savings from "./pages/Savings";
 import Analytics from "./pages/Analytics";
+import Import from "./pages/Import";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/budgets" element={<Budgets />} />
             <Route path="/savings" element={<Savings />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/import" element={<Import />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
