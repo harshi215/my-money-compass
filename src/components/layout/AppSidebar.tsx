@@ -25,6 +25,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -43,6 +44,8 @@ const mainNavItems = [
 export function AppSidebar() {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
 
   const handleSignOut = async () => {
     await signOut();
@@ -50,13 +53,13 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="none" className="border-r-0 min-w-[240px] w-[240px]">
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sidebar-primary flex items-center justify-center flex-shrink-0">
-            <Wallet className="w-5 h-5 text-sidebar-primary-foreground" />
+    <Sidebar collapsible="icon" className="border-r-0">
+      <SidebarHeader className="p-4 group-data-[collapsible=icon]:p-2">
+        <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
+          <div className="w-10 h-10 rounded-xl bg-sidebar-primary flex items-center justify-center flex-shrink-0 group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:h-8">
+            <Wallet className="w-5 h-5 text-sidebar-primary-foreground group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4" />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col group-data-[collapsible=icon]:hidden">
             <span className="font-bold text-lg text-sidebar-foreground">WealthWise</span>
             <span className="text-xs text-sidebar-foreground/60">Finance Tracker</span>
           </div>
@@ -90,9 +93,9 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className={isCollapsed ? "p-2" : "p-4"}>
         <Separator className="mb-4 bg-sidebar-border" />
-        {user && (
+        {user && !isCollapsed && (
           <div className="mb-4 px-2">
             <p className="text-sm font-medium text-sidebar-foreground truncate">
               {user.email}
@@ -100,24 +103,28 @@ export function AppSidebar() {
           </div>
         )}
         <div className="flex flex-col gap-2">
-          <Button
-            variant="ghost"
-            size="default"
-            className="justify-start text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-            onClick={() => navigate('/settings')}
-          >
-            <Settings className="w-5 h-5" />
-            <span className="ml-3">Settings</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="default"
-            className="justify-start text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10"
-            onClick={handleSignOut}
-          >
-            <LogOut className="w-5 h-5" />
-            <span className="ml-3">Sign Out</span>
-          </Button>
+          <SidebarMenuButton asChild tooltip="Settings">
+            <Button
+              variant="ghost"
+              size={isCollapsed ? "icon" : "default"}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent`}
+              onClick={() => navigate('/settings')}
+            >
+              <Settings className="w-5 h-5 flex-shrink-0" />
+              {!isCollapsed && <span className="ml-3">Settings</span>}
+            </Button>
+          </SidebarMenuButton>
+          <SidebarMenuButton asChild tooltip="Sign Out">
+            <Button
+              variant="ghost"
+              size={isCollapsed ? "icon" : "default"}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10`}
+              onClick={handleSignOut}
+            >
+              <LogOut className="w-5 h-5 flex-shrink-0" />
+              {!isCollapsed && <span className="ml-3">Sign Out</span>}
+            </Button>
+          </SidebarMenuButton>
         </div>
       </SidebarFooter>
     </Sidebar>
