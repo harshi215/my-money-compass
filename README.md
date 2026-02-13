@@ -1,73 +1,85 @@
-# Welcome to your Lovable project
+# 💰 WealthWise — Personal Finance Tracker
 
-## Project info
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Built with React](https://img.shields.io/badge/Built%20with-React-61DAFB?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-3178C6?logo=typescript)](https://www.typescriptlang.org)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+WealthWise is an open-source personal finance tracker that helps you manage expenses, income, budgets, savings goals, and recurring transactions — all in one place.
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- 📊 **Dashboard** — Overview of your financial health at a glance
+- 💸 **Expense Tracking** — Log and categorize your spending
+- 💰 **Income Management** — Track all sources of income
+- 📋 **Budgets** — Set monthly budgets by category
+- 🎯 **Savings Goals** — Set and track progress toward financial goals
+- 🔄 **Recurring Transactions** — Automate repeating income and expenses
+- 📈 **Analytics** — Visual charts and insights into your finances
+- 📥 **Import** — Upload CSV/Excel files for AI-powered transaction analysis
+- 🔐 **Authentication** — Secure email-based signup and login
 
-**Use Lovable**
+## 🛠 Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Supabase (Database, Auth, Edge Functions)
+- **Charts:** Recharts
+- **State Management:** TanStack React Query
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- [Node.js](https://nodejs.org/) (v18+)
+- [npm](https://www.npmjs.com/) or [bun](https://bun.sh/)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Environment Variables
 
-**Use GitHub Codespaces**
+Create a `.env` file in the root directory with:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+```
 
-## What technologies are used for this project?
+## 🤝 Contributing
 
-This project is built with:
+Contributions are welcome! Here's how you can help:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-## How can I deploy this project?
+### Guidelines
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- Follow the existing code style and conventions
+- Write meaningful commit messages
+- Add tests for new features when applicable
+- Update documentation as needed
 
-## Can I connect a custom domain to my Lovable project?
+## 📄 License
 
-Yes, you can!
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🙏 Acknowledgments
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
+- [Recharts](https://recharts.org/) for data visualization
+- [Lucide](https://lucide.dev/) for icons
