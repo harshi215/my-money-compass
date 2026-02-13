@@ -20,7 +20,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     );
   }
 
-  // Allow unauthenticated access - auth is optional
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
 
   return (
     <SidebarProvider defaultOpen={true}>

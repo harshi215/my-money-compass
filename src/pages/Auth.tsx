@@ -32,7 +32,7 @@ export default function Auth() {
         variant: 'destructive',
       });
     } else {
-      navigate('/');
+      navigate('/dashboard');
     }
     setIsLoading(false);
   };
@@ -59,7 +59,7 @@ export default function Auth() {
         title: 'Account created!',
         description: 'You can now sign in to your account.',
       });
-      navigate('/');
+      navigate('/dashboard');
     }
     setIsLoading(false);
   };
