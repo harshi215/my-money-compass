@@ -11,6 +11,7 @@ import {
   PiggyBank,
   RefreshCw,
   FileUp,
+  Bot,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/hooks/useAuth';
@@ -39,6 +40,7 @@ const mainNavItems = [
   { title: 'Savings', url: '/savings', icon: PiggyBank },
   { title: 'Analytics', url: '/analytics', icon: PieChart },
   { title: 'Import Data', url: '/import', icon: FileUp },
+  { title: 'AI Assistant', url: '/assistant', icon: Bot },
 ];
 
 export function AppSidebar() {
