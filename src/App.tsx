@@ -15,6 +15,7 @@ import Savings from "./pages/Savings";
 import Analytics from "./pages/Analytics";
 import Import from "./pages/Import";
 import Settings from "./pages/Settings";
+import Assistant from "./pages/Assistant";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/import" element={<Import />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/assistant" element={<Assistant />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
