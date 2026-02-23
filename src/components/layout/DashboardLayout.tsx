@@ -46,14 +46,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <TooltipTrigger asChild>
             <Button
               onClick={() => navigate('/assistant')}
-              size="icon"
-              className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground animate-in fade-in slide-in-from-bottom-4"
+              className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg animate-bounce-slow animate-glow-pulse border-2 border-savings/30 p-0"
+              style={{
+                background: 'linear-gradient(135deg, hsl(217 91% 60%), hsl(260 80% 60%))',
+              }}
             >
-              <Bot className="w-6 h-6" />
+              <Bot className="w-7 h-7 text-white" />
+              <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-white"></span>
+              </span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="left">
-            <p>AI Assistant</p>
+          <TooltipContent side="left" className="font-semibold">
+            <p>✨ AI Assistant</p>
           </TooltipContent>
         </Tooltip>
       </div>
