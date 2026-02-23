@@ -13,6 +13,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Sparkles,
+  LogOut,
 } from 'lucide-react';
 
 const features = [
@@ -69,7 +70,11 @@ const highlights = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,9 +89,15 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             {user ? (
-              <Button onClick={() => navigate('/dashboard')}>
-                Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              <>
+                <Button onClick={() => navigate('/dashboard')}>
+                  Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button variant="outline" onClick={handleSignOut} className="gap-2">
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <>
                 <Button variant="ghost" onClick={() => navigate('/auth')}>
@@ -128,11 +139,6 @@ export default function LandingPage() {
             <Button size="lg" className="text-lg px-8 py-6" onClick={() => navigate('/auth')}>
               Start for Free <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                View on GitHub
-              </a>
-            </Button>
           </div>
 
           {/* Highlight chips */}
@@ -147,47 +153,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Dashboard Preview Mockup */}
-      <section className="max-w-5xl mx-auto px-6 -mt-4 mb-20">
-        <div className="rounded-2xl border-2 border-border/50 bg-card p-6 shadow-xl">
-          <div className="flex items-center gap-2 mb-6">
-            <div className="w-3 h-3 rounded-full bg-destructive/60" />
-            <div className="w-3 h-3 rounded-full" style={{ background: 'hsl(var(--warning))' }} />
-            <div className="w-3 h-3 rounded-full" style={{ background: 'hsl(var(--income))' }} />
-            <span className="text-sm text-muted-foreground ml-3">WealthWise Dashboard</span>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: 'Income', value: '$8,450', variant: 'income' },
-              { label: 'Expenses', value: '$3,280', variant: 'expense' },
-              { label: 'Balance', value: '$5,170', variant: 'balance' },
-              { label: 'Saved', value: '$12,800', variant: 'savings' },
-            ].map((stat) => (
-              <div key={stat.label} className={`stat-card-${stat.variant} border p-4`}>
-                <p className="text-xs text-muted-foreground mb-1">{stat.label}</p>
-                <p className="text-xl font-bold mono-number text-foreground">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            <div className="col-span-2 rounded-xl bg-background/50 border p-4 h-32 flex items-end gap-1">
-              {[40, 65, 50, 80, 70, 55, 90, 60, 75, 85, 45, 95].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-t"
-                  style={{ height: `${h}%`, background: i % 2 === 0 ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.4)' }}
-                />
-              ))}
-            </div>
-            <div className="rounded-xl bg-background/50 border p-4 flex flex-col justify-center items-center">
-              <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center" style={{ borderColor: 'hsl(var(--income))' }}>
-                <span className="text-sm font-bold text-foreground">72%</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">Budget Used</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features */}
       <section className="max-w-6xl mx-auto px-6 pb-24">
