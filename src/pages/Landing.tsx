@@ -207,7 +207,7 @@ export default function LandingPage() {
             <span className="font-semibold text-foreground">WealthWise</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            Open source · MIT License · Made with ❤️
+            Open source · Made with ❤️
           </p>
         </div>
       </footer>
