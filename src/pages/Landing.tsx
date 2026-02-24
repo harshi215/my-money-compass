@@ -206,6 +206,15 @@ export default function LandingPage() {
             <Wallet className="w-5 h-5 text-primary" />
             <span className="font-semibold text-foreground">WealthWise</span>
           </div>
+          <div className="flex items-center gap-4">
+            <button onClick={() => navigate('/privacy')} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Privacy Policy
+            </button>
+            <span className="text-muted-foreground">·</span>
+            <button onClick={() => navigate('/terms')} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Terms of Service
+            </button>
+          </div>
           <p className="text-sm text-muted-foreground">
             Open source · Made with ❤️
           </p>
