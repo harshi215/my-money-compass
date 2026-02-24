@@ -1,6 +1,6 @@
 # 💰 WealthWise — Personal Finance Tracker
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 [![Built with React](https://img.shields.io/badge/Built%20with-React-61DAFB?logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-3178C6?logo=typescript)](https://www.typescriptlang.org)
 
@@ -73,10 +73,6 @@ Contributions are welcome! Here's how you can help:
 - Write meaningful commit messages
 - Add tests for new features when applicable
 - Update documentation as needed
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
