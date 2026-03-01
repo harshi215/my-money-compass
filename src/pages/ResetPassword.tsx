@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Wallet, Loader2, Lock, CheckCircle } from 'lucide-react';
+import { Wallet, Loader2, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { getAuthErrorMessage } from '@/lib/auth-errors';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
@@ -14,18 +16,17 @@ export default function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRecovery, setIsRecovery] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [resetError, setResetError] = useState<{ title: string; description: string } | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Listen for the PASSWORD_RECOVERY event from the auth state change
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setIsRecovery(true);
       }
     });
 
-    // Also check the URL hash for recovery type (handles page refresh)
     const hash = window.location.hash;
     if (hash.includes('type=recovery')) {
       setIsRecovery(true);
@@ -36,22 +37,19 @@ export default function ResetPassword() {
 
   const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setResetError(null);
 
     if (password.length < 6) {
-      toast({
-        title: 'Password too short',
-        description: 'Password must be at least 6 characters.',
-        variant: 'destructive',
-      });
+      const err = { title: 'Password too short', description: 'Password must be at least 6 characters.' };
+      setResetError(err);
+      toast({ ...err, variant: 'destructive' });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast({
-        title: 'Passwords do not match',
-        description: 'Please make sure both passwords are the same.',
-        variant: 'destructive',
-      });
+      const err = { title: 'Passwords do not match', description: 'Please make sure both passwords are the same.' };
+      setResetError(err);
+      toast({ ...err, variant: 'destructive' });
       return;
     }
 
@@ -60,9 +58,11 @@ export default function ResetPassword() {
     const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
+      const friendly = getAuthErrorMessage(error);
+      setResetError(friendly);
       toast({
-        title: 'Reset failed',
-        description: error.message,
+        title: friendly.title,
+        description: friendly.description,
         variant: 'destructive',
       });
     } else {
@@ -131,6 +131,14 @@ export default function ResetPassword() {
           </div>
           <span className="text-xl font-bold">WealthWise</span>
         </div>
+
+        {resetError && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>{resetError.title}</AlertTitle>
+            <AlertDescription>{resetError.description}</AlertDescription>
+          </Alert>
+        )}
 
         <Card className="border-0 shadow-lg">
           <CardHeader className="space-y-1">

@@ -3,8 +3,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Mail, CheckCircle } from 'lucide-react';
+import { Loader2, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -13,26 +14,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { getAuthErrorMessage } from '@/lib/auth-errors';
 
 export function ForgotPasswordDialog() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dialogError, setDialogError] = useState<{ title: string; description: string } | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setDialogError(null);
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
 
     if (error) {
+      const friendly = getAuthErrorMessage(error);
+      setDialogError(friendly);
       toast({
-        title: 'Error',
-        description: error.message,
+        title: friendly.title,
+        description: friendly.description,
         variant: 'destructive',
       });
     } else {
@@ -47,6 +53,7 @@ export function ForgotPasswordDialog() {
     if (!newOpen) {
       setEmail('');
       setIsSent(false);
+      setDialogError(null);
     }
   };
 
@@ -92,6 +99,15 @@ export function ForgotPasswordDialog() {
                 Enter the email address associated with your account and we'll send you a link to reset your password.
               </DialogDescription>
             </DialogHeader>
+
+            {dialogError && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>{dialogError.title}</AlertTitle>
+                <AlertDescription>{dialogError.description}</AlertDescription>
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4 mt-2">
               <div className="space-y-2">
                 <Label htmlFor="reset-email">Email address</Label>

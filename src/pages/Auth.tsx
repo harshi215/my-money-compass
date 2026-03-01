@@ -1,24 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { Wallet, TrendingUp, PiggyBank, ArrowRight, Loader2 } from 'lucide-react';
+import { Wallet, TrendingUp, PiggyBank, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { ForgotPasswordDialog } from '@/components/auth/ForgotPasswordDialog';
+import { getAuthErrorMessage } from '@/lib/auth-errors';
 
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<{ title: string; description: string } | null>(null);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Clear stale session on mount to stop refresh token retry loops
+  useEffect(() => {
+    supabase.auth.signOut().catch(() => {
+      // Ignore errors during cleanup
+    });
+  }, []);
+
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError(null);
     
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
@@ -27,9 +39,11 @@ export default function Auth() {
     const { error } = await signIn(email, password);
     
     if (error) {
+      const friendly = getAuthErrorMessage(error);
+      setAuthError(friendly);
       toast({
-        title: 'Sign in failed',
-        description: error.message,
+        title: friendly.title,
+        description: friendly.description,
         variant: 'destructive',
       });
     } else {
@@ -41,6 +55,7 @@ export default function Auth() {
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError(null);
     
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
@@ -50,9 +65,11 @@ export default function Auth() {
     const { error } = await signUp(email, password, fullName);
     
     if (error) {
+      const friendly = getAuthErrorMessage(error);
+      setAuthError(friendly);
       toast({
-        title: 'Sign up failed',
-        description: error.message,
+        title: friendly.title,
+        description: friendly.description,
         variant: 'destructive',
       });
     } else {
@@ -122,7 +139,16 @@ export default function Auth() {
             <span className="text-xl font-bold">WealthWise</span>
           </div>
 
-          <Tabs defaultValue="signin" className="w-full">
+          {/* Persistent error alert */}
+          {authError && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>{authError.title}</AlertTitle>
+              <AlertDescription>{authError.description}</AlertDescription>
+            </Alert>
+          )}
+
+          <Tabs defaultValue="signin" className="w-full" onValueChange={() => setAuthError(null)}>
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
