@@ -11,11 +11,13 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Wallet, TrendingUp, PiggyBank, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { ForgotPasswordDialog } from '@/components/auth/ForgotPasswordDialog';
+import { PasswordStrengthIndicator } from '@/components/auth/PasswordStrengthIndicator';
 import { getAuthErrorMessage } from '@/lib/auth-errors';
 
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState<{ title: string; description: string } | null>(null);
+  const [signupPassword, setSignupPassword] = useState('');
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -243,7 +245,10 @@ export default function Auth() {
                         required
                         minLength={6}
                         disabled={isLoading}
+                        value={signupPassword}
+                        onChange={(e) => setSignupPassword(e.target.value)}
                       />
+                      <PasswordStrengthIndicator password={signupPassword} />
                     </div>
                     <Button type="submit" className="w-full" disabled={isLoading}>
                       {isLoading ? (
