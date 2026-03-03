@@ -54,12 +54,14 @@ export default function Auth() {
     setAppleLoading(false);
   };
 
-  // Clear stale session on mount to stop refresh token retry loops
+  // Redirect to dashboard if already authenticated
   useEffect(() => {
-    supabase.auth.signOut().catch(() => {
-      // Ignore errors during cleanup
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate('/dashboard');
+      }
     });
-  }, []);
+  }, [navigate]);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
