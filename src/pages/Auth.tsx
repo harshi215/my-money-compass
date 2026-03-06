@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
@@ -22,7 +21,7 @@ export default function Auth() {
   const [appleLoading, setAppleLoading] = useState(false);
   const [authError, setAuthError] = useState<{ title: string; description: string } | null>(null);
   const [signupPassword, setSignupPassword] = useState('');
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, session, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -54,14 +53,12 @@ export default function Auth() {
     setAppleLoading(false);
   };
 
-  // Redirect to dashboard if already authenticated
+  // Redirect to dashboard when auth session is ready
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate('/dashboard');
-      }
-    });
-  }, [navigate]);
+    if (!authLoading && session) {
+      navigate('/dashboard');
+    }
+  }, [authLoading, session, navigate]);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
