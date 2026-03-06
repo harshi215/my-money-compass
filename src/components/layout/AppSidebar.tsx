@@ -109,7 +109,7 @@ export function AppSidebar() {
             <Button
               variant="ghost"
               size={isCollapsed ? "icon" : "default"}
-              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent`}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200 hover:translate-x-1`}
               onClick={() => navigate('/settings')}
             >
               <Settings className="w-5 h-5 flex-shrink-0" />
