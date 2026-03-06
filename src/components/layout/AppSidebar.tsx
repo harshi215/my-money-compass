@@ -81,8 +81,8 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end={item.url === '/dashboard'}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
-                      activeClassName="bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground"
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200 hover:translate-x-1"
+                      activeClassName="bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground hover:translate-x-0"
                     >
                       <item.icon className="w-5 h-5 flex-shrink-0" />
                       <span className="font-medium">{item.title}</span>
@@ -109,7 +109,7 @@ export function AppSidebar() {
             <Button
               variant="ghost"
               size={isCollapsed ? "icon" : "default"}
-              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent`}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200 hover:translate-x-1`}
               onClick={() => navigate('/settings')}
             >
               <Settings className="w-5 h-5 flex-shrink-0" />
@@ -120,7 +120,7 @@ export function AppSidebar() {
             <Button
               variant="ghost"
               size={isCollapsed ? "icon" : "default"}
-              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10`}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10 transition-all duration-200 hover:translate-x-1`}
               onClick={handleSignOut}
             >
               <LogOut className="w-5 h-5 flex-shrink-0" />
