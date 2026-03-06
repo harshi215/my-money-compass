@@ -120,7 +120,7 @@ export function AppSidebar() {
             <Button
               variant="ghost"
               size={isCollapsed ? "icon" : "default"}
-              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10`}
+              className={`${isCollapsed ? "justify-center" : "justify-start"} text-sidebar-foreground/70 hover:text-destructive hover:bg-destructive/10 transition-all duration-200 hover:translate-x-1`}
               onClick={handleSignOut}
             >
               <LogOut className="w-5 h-5 flex-shrink-0" />
