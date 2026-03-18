@@ -167,8 +167,8 @@ export default function SettingsPage() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input value={user?.email || ''} disabled className="bg-muted" />
+                  <Label>Username</Label>
+                  <Input value={user?.username || ''} disabled className="bg-muted" />
                 </div>
 
                 <FormField
