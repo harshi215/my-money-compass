@@ -69,17 +69,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .maybeSingle();
 
     if (error) return { error };
-    if (!data) return { error: new Error('Invalid username or password') };
 
-    const customUser: CustomUser = {
-      id: data.id,
-      username: data.username,
-      email: data.username, // Fallback so {user.email} works in the sidebar and settings
-    };
+    if (data) {
+      const customUser: CustomUser = {
+        id: data.id,
+        username: data.username,
+        email: data.username, // Fallback so {user.email} works in the sidebar and settings
+      };
 
-    setUser(customUser);
-    localStorage.setItem('custom_user', JSON.stringify(customUser));
-    return { error: null };
+      setUser(customUser);
+      localStorage.setItem('custom_user', JSON.stringify(customUser));
+      return { error: null };
+    }
+
+    // Check if the username exists in pending_signups
+    const { data: pendingData, error: pendingError } = await (supabase as any)
+      .from('pending_signups')
+      .select('username')
+      .eq('username', username)
+      .maybeSingle();
+
+    if (!pendingError && pendingData) {
+      return { error: new Error('pending authorization') };
+    }
+
+    return { error: new Error('Invalid username or password') };
   };
 
   const signOut = async () => {

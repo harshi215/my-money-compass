@@ -17,10 +17,18 @@ export function getAuthErrorMessage(error: { message: string } | string): { titl
   }
 
   // Invalid credentials
-  if (lower.includes('invalid login credentials') || lower.includes('invalid credentials')) {
+  if (lower.includes('invalid login credentials') || lower.includes('invalid credentials') || lower.includes('invalid username or password')) {
     return {
       title: 'Invalid credentials',
-      description: 'The email or password you entered is incorrect. Please try again.',
+      description: 'The username or password you entered is incorrect. Please try again.',
+    };
+  }
+
+  // Pending authorization
+  if (lower.includes('pending authorization')) {
+    return {
+      title: 'Account Pending Approval',
+      description: 'Your account is pending authorization. You will be authorized to login soon.',
     };
   }
 
@@ -33,10 +41,10 @@ export function getAuthErrorMessage(error: { message: string } | string): { titl
   }
 
   // User already registered
-  if (lower.includes('user already registered')) {
+  if (lower.includes('user already registered') || lower.includes('pending_signups_username_key') || lower.includes('duplicate key value violates unique constraint')) {
     return {
-      title: 'Account exists',
-      description: 'An account with this email already exists. Try signing in instead.',
+      title: 'Username taken',
+      description: 'This username is already taken or pending authorization. Please try another one.',
     };
   }
 
