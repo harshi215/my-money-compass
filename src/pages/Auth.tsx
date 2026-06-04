@@ -218,7 +218,6 @@ export default function Auth() {
                         id="signup-name"
                         name="fullName"
                         type="text"
-                        placeholder="John Doe"
                         disabled={isLoading}
                       />
                     </div>
