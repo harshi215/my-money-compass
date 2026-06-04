@@ -1,66 +1,71 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-export interface CustomUser {
-  id: string;
-  username: string;
-}
-
 interface AuthContextType {
-  user: CustomUser | null;
-  session: any | null;
+  user: User | null;
+  session: Session | null;
   loading: boolean;
-  signUp: (username: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
-  signIn: (username: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<CustomUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('custom_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    // Set up auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    // Then check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (username: string, password: string, fullName?: string) => {
-    const { error } = await (supabase as any).from('pending_signups').insert([{
-      username,
+  const signUp = async (email: string, password: string, fullName?: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
       password,
-      full_name: fullName
-    }]);
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
     return { error };
   };
 
-  const signIn = async (username: string, password: string) => {
-    const { data, error } = await (supabase as any)
-      .from('users')
-      .select('id, username')
-      .eq('username', username)
-      .eq('password', password)
-      .maybeSingle();
-
-    if (error) return { error };
-    if (!data) return { error: new Error('Invalid username or password') };
-
-    setUser(data);
-    localStorage.setItem('custom_user', JSON.stringify(data));
-    return { error: null };
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
   };
 
   const signOut = async () => {
-    setUser(null);
-    localStorage.removeItem('custom_user');
+    await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, session: user ? { user } : null, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
