@@ -1,10 +1,15 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+export interface CustomUser {
+  id: string;
+  username: string;
+  email: string;
+}
+
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: CustomUser | null;
+  session: any | null;
   loading: boolean;
   username: string;
   signUp: (username: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
@@ -15,68 +20,75 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<CustomUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener first
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
+    const storedUser = localStorage.getItem('custom_user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+
+    // Mock getSession on the supabase client so other hooks can fetch properly
+    supabase.auth.getSession = async () => {
+      const stored = localStorage.getItem('custom_user');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return {
+          data: {
+            session: {
+              access_token: 'mock-token',
+              user: parsed,
+            } as any
+          },
+          error: null
+        };
       }
-    );
-
-    // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+      return { data: { session: null }, error: null };
+    };
   }, []);
 
-  const getEmailFromUsername = (username: string) => {
-    return username.includes('@') ? username : `${username.trim().toLowerCase()}@moneycompass.local`;
-  };
-
   const signUp = async (username: string, password: string, fullName?: string) => {
-    const email = getEmailFromUsername(username);
-    const { error } = await supabase.auth.signUp({
-      email,
+    const { error } = await (supabase as any).from('pending_signups').insert([{
+      username,
       password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: {
-          full_name: fullName,
-        },
-      },
-    });
+      full_name: fullName
+    }]);
     return { error };
   };
 
   const signIn = async (username: string, password: string) => {
-    const email = getEmailFromUsername(username);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    const { data, error } = await (supabase as any)
+      .from('users')
+      .select('id, username')
+      .eq('username', username)
+      .eq('password', password)
+      .maybeSingle();
+
+    if (error) return { error };
+    if (!data) return { error: new Error('Invalid username or password') };
+
+    const customUser: CustomUser = {
+      id: data.id,
+      username: data.username,
+      email: data.username, // Fallback so {user.email} works in the sidebar and settings
+    };
+
+    setUser(customUser);
+    localStorage.setItem('custom_user', JSON.stringify(customUser));
+    return { error: null };
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    setUser(null);
+    localStorage.removeItem('custom_user');
   };
 
-  const username = user?.email?.endsWith('@moneycompass.local') 
-    ? user.email.split('@')[0] 
-    : user?.email || '';
+  const username = user?.username || '';
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, username, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session: user ? { user } : null, loading, username, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
