@@ -44,7 +44,7 @@ const mainNavItems = [
 ];
 
 export function AppSidebar() {
-  const { signOut, user } = useAuth();
+  const { signOut, user, username } = useAuth();
   const navigate = useNavigate();
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
@@ -100,7 +100,7 @@ export function AppSidebar() {
         {user && !isCollapsed && (
           <div className="mb-4 px-2">
             <p className="text-sm font-medium text-sidebar-foreground truncate">
-              {user.email}
+              {username}
             </p>
           </div>
         )}

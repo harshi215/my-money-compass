@@ -35,10 +35,10 @@ export default function Auth() {
     setAuthError(null);
     
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
+    const username = formData.get('username') as string;
     const password = formData.get('password') as string;
 
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(username, password);
     
     if (error) {
       const friendly = getAuthErrorMessage(error);
@@ -60,11 +60,11 @@ export default function Auth() {
     setAuthError(null);
     
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
+    const username = formData.get('username') as string;
     const password = formData.get('password') as string;
     const fullName = formData.get('fullName') as string;
 
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await signUp(username, password, fullName);
     
     if (error) {
       const friendly = getAuthErrorMessage(error);
@@ -77,7 +77,7 @@ export default function Auth() {
     } else {
       toast({
         title: 'Account created!',
-        description: 'Please check your email to confirm your account or sign in if confirmation is disabled.',
+        description: 'Your account has been created successfully. You can now sign in.',
       });
     }
     setIsLoading(false);
@@ -166,12 +166,12 @@ export default function Auth() {
                 <CardContent>
                   <form onSubmit={handleSignIn} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="signin-email">Email</Label>
+                      <Label htmlFor="signin-username">Username</Label>
                       <Input
-                        id="signin-email"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
+                        id="signin-username"
+                        name="username"
+                        type="text"
+                        placeholder="Enter your username"
                         required
                         disabled={isLoading}
                       />
@@ -223,12 +223,12 @@ export default function Auth() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-email">Email</Label>
+                      <Label htmlFor="signup-username">Username</Label>
                       <Input
-                        id="signup-email"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
+                        id="signup-username"
+                        name="username"
+                        type="text"
+                        placeholder="Enter your username"
                         required
                         disabled={isLoading}
                       />

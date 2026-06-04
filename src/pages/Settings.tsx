@@ -49,7 +49,7 @@ const currencies = [
 ];
 
 export default function SettingsPage() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, username } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [darkMode, setDarkMode] = useState(false);
@@ -167,8 +167,8 @@ export default function SettingsPage() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input value={user?.email || ''} disabled className="bg-muted" />
+                  <Label>Username</Label>
+                  <Input value={username} disabled className="bg-muted" />
                 </div>
 
                 <FormField

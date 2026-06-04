@@ -6,8 +6,9 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  username: string;
+  signUp: (username: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
+  signIn: (username: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -38,7 +39,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, fullName?: string) => {
+  const getEmailFromUsername = (username: string) => {
+    return username.includes('@') ? username : `${username.trim().toLowerCase()}@moneycompass.local`;
+  };
+
+  const signUp = async (username: string, password: string, fullName?: string) => {
+    const email = getEmailFromUsername(username);
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -52,7 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (username: string, password: string) => {
+    const email = getEmailFromUsername(username);
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -64,8 +71,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   };
 
+  const username = user?.email?.endsWith('@moneycompass.local') 
+    ? user.email.split('@')[0] 
+    : user?.email || '';
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, username, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
