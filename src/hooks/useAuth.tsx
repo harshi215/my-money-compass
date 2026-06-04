@@ -19,6 +19,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<CustomUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return {
           data: {
             session: {
-              access_token: 'mock-token',
+              access_token: ANON_KEY,
               user: parsed,
             } as any
           },
